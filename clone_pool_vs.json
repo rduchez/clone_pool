@@ -1,0 +1,65 @@
+{
+    "class": "ADC",
+    "schemaVersion": "3.9.0",
+    "id": "Shape_Clone_Pools",
+    "remark": "Clone Pools Support",
+    "shape_clone_pool": {
+        "class": "Tenant",
+        "Application": {
+            "class": "Application",
+            "template": "generic",
+            "testService": {
+                "class": "Service_HTTP",
+                "virtualAddresses": [
+                    "10.0.253.114"
+                ],
+                "virtualPort": 80,
+                "pool": "web_pool",
+                "clonePools": {
+                    "ingress": {
+                        "use": "testPoolCloneIngress"
+                    },
+                    "egress": {
+                        "use": "testPoolCloneEgress"
+                    }
+                }
+            },
+            "testPoolCloneIngress": {
+                "class": "Pool",
+                "members": [
+                    {
+                        "servicePort": 80,
+                        "serverAddresses": [
+                            "10.0.253.250"
+                        ]
+                    }
+                ]
+            },
+            "testPoolCloneEgress": {
+                "class": "Pool",
+                "members": [
+                    {
+                        "servicePort": 80,
+                        "serverAddresses": [
+                            "10.0.253.250"
+                        ]
+                    }
+                ]
+            },
+            "web_pool": {
+                "class": "Pool",
+                "monitors": [
+                    "http"
+                ],
+                "members": [
+                    {
+                        "servicePort": 80,
+                        "serverAddresses": [
+                            "10.0.253.131"
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+}
